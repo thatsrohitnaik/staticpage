@@ -5,6 +5,7 @@ import React from "react";
 import Letter from "./components/letter/Letter.jsx";
 import Timetable from "./components/Timetable/Timetable.jsx";
 import Itenary from "./components/details/itenary.jsx";
+import RSVP from "./components/RSVP/RSVP.jsx";
 
 export default function App() {
 
@@ -21,6 +22,8 @@ export default function App() {
         <br/>
         <Letter/>
         <Itenary/>
+        <br/>
+        <RSVP />
     </div>
   )
 }

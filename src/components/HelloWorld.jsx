@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import './HelloWorld.css'
 import defaultBg from '../assets/images/home.png'
 import mobileBg from '../assets/images/home.png'
+import Confetti from './Confetti/Confetti'
 
 // collect all SVG file URLs from the images folder using Vite's import.meta.glob
 // This works with Vite; it eagerly imports the modules so we get URLs.
@@ -60,14 +61,15 @@ export default function HelloWorld({ bgImage }) {
   return (
       <section className="hello-world" style={style}>
         <div className="hello-world-content">
-          <div className="svgs">
-            {svgUrls.map((src, idx) => (
-                <div className="svg-item" key={idx}>
-                  <img src={src} alt={`svg-${idx}`} />
-                </div>
-            ))}
-          </div>
-        </div>
-      </section>
-  )
-}
+          <Confetti runOnMount density={1} />
+           <div className="svgs">
+             {svgUrls.map((src, idx) => (
+                 <div className="svg-item" key={idx}>
+                   <img src={src} alt={`svg-${idx}`} />
+                 </div>
+             ))}
+           </div>
+         </div>
+       </section>
+   )
+ }

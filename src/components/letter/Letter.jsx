@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import './Letter.css';
 import letterBg from '../../assets/images/letter.png';
+import Fireworks from '../Fireworks/Fireworks';
 
 export default function Letter() {
   // read recipient from URL params (supports ?to=Name or ?recipient=Name or ?name=Name)
@@ -15,7 +16,6 @@ export default function Letter() {
 
   const salutation = recipient ? `To ${recipient},` : 'To our dearest friends and family,';
 
-
   return (
       <div>
           <div className="letter-header">{salutation}</div>
@@ -28,6 +28,7 @@ export default function Letter() {
           backgroundPosition: 'center',
         }}
       >
+        <Fireworks density={2} />
       </article>
     </div>
       </div>

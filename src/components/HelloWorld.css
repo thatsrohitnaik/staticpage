@@ -106,6 +106,33 @@
   }
 }
 
+/* Scale up SVGs on large monitor resolutions */
+@media (min-width: 1400px) {
+  /* make the hero take the full viewport for large monitors */
+  .hello-world {
+    min-height: 100vh;
+    padding: 4rem;
+  }
+
+  /* allow svgs container to use the full available viewport height */
+  .svgs {
+    max-height: calc(100vh - 8rem); /* leave space for header/padding */
+  }
+
+  /* make each svg-item share vertical space and expand */
+  .svg-item {
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+
+  /* let svg images fill their container height while keeping aspect ratio */
+  .svg-item img {
+    width: auto;
+    height: 100%;
+    max-height: none;
+    object-fit: contain;
+  }
+}
 /* ensure overlay doesn't cover content */
 .hello-world > .hello-world-content {
   position: relative;
