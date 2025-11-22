@@ -2,6 +2,7 @@ import HelloWorld from './components/HelloWorld'
 import defaultBg from "./assets/images/home.png";
 import CountdownBar from "./components/countdown/CountdownBar.jsx";
 import React from "react";
+import Letter from "./components/letter/Letter.jsx";
 
 export default function App() {
 
@@ -15,6 +16,7 @@ export default function App() {
     <div className="app" style={style}>
         <CountdownBar />
         <HelloWorld />
+        <Letter/>
     </div>
   )
 }
