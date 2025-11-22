@@ -1,0 +1,94 @@
+.hello-world {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* make the component match the viewport height */
+  min-height: 100vh;
+  height: 100vh;
+  color: #fff;
+  /* background handled inline to support image prop */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.hello-world::before {
+  /* This pseudo element can be used for an extra overlay if needed */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+.hello-world-content {
+  position: relative; /* above overlay */
+  z-index: 1;
+  width: 100%;
+  max-width: none; /* allow full width so svgs can span the page */
+  /* allow content to take full height so SVGs can fill the page */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* remove inner padding so svgs can use full width */
+}
+
+/* SVG container - STACK vertically and take full height */
+.svgs {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* no gap since they should stack tightly */
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  justify-content: stretch;
+  align-items: stretch;
+  margin: 0; /* remove top margin to use full height */
+}
+
+.svg-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* remove any background or shadow */
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
+  /* make each svg-item share available vertical space equally */
+  flex: 1 1 0%;
+}
+
+.svg-item img {
+  /* make SVGs fill their container completely */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fill the area, cropping if necessary */
+  display: block;
+  filter: none; /* ensure the svg colors show */
+}
+
+/* Responsive adjustments: keep full viewport height but increase padding */
+@media (min-width: 768px) {
+  .hello-world {
+    padding: 2.5rem;
+  }
+  /* remove previous fixed-size overrides for svg-item so they remain full-size */
+}
+
+@media (min-width: 1200px) {
+  .hello-world {
+    padding: 3rem;
+  }
+}
+
+/* ensure overlay doesn't cover content */
+.hello-world > .hello-world-content {
+  position: relative;
+  z-index: 2;
+}
