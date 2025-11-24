@@ -3,9 +3,9 @@ import defaultBg from "./assets/images/home.png";
 import CountdownBar from "./components/countdown/CountdownBar.jsx";
 import React from "react";
 import Letter from "./components/letter/Letter.jsx";
-import Timetable from "./components/Timetable/Timetable.jsx";
 import Itenary from "./components/details/itenary.jsx";
-import RSVP from "./components/RSVP/RSVP.jsx";
+import GoogleFormRSVP from "./components/googleformrsvp/GoogleFormRSVP.jsx";
+import GooglePhotos from "./components/googlephoto/GooglePhotos.jsx";
 
 export default function App() {
 
@@ -21,9 +21,10 @@ export default function App() {
         <HelloWorld />
         <br/>
         <Letter/>
-        <Itenary/>
-        <br/>
-        <RSVP />
+        {/*<Itenary/>*/}
+        <GoogleFormRSVP/>
     </div>
   )
 }
+
+

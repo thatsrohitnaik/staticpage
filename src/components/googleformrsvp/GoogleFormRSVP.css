@@ -1,0 +1,23 @@
+.googleform-rsvp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.googleform-rsvp__embed {
+  width: 100%;
+  max-width: 900px; /* keep it reasonable on large screens */
+  background: transparent;
+  box-sizing: border-box;
+  aspect-ratio: 640 / 832; /* maintain iframe aspect ratio */
+}
+
+.googleform-rsvp__embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+

@@ -1,0 +1,52 @@
+.googlephotos {
+  padding: 16px 16px 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* center vertically */
+  min-height: 100%;
+}
+
+.googlephotos__container {
+  width: 100%;
+  max-width: 980px;
+  box-sizing: border-box;
+  padding: 12px 12px 0 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.googlephotos__embed {
+  width: 100%;
+  /* maintain aspect ratio */
+  aspect-ratio: 640 / 832;
+  background: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0;
+}
+
+.googlephotos__embed iframe {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  border: 0 !important;
+}
+
+/* Defensive reset for any injected elements */
+.googlephotos__embed > * {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.googlephotos__message {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #0d6efd; /* bootstrap primary */
+}
