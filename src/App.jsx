@@ -6,6 +6,7 @@ import Letter from "./components/letter/Letter.jsx";
 import Itenary from "./components/details/itenary.jsx";
 import GoogleFormRSVP from "./components/googleformrsvp/GoogleFormRSVP.jsx";
 import GooglePhotos from "./components/googlephoto/GooglePhotos.jsx";
+import Info from "./components/Info/index.js";
 
 export default function App() {
 
@@ -21,8 +22,9 @@ export default function App() {
         <HelloWorld />
         <br/>
         <Letter/>
+        <Info/>
         {/*<Itenary/>*/}
-        <GoogleFormRSVP/>
+        {/*<GoogleFormRSVP/>*/}
     </div>
   )
 }
