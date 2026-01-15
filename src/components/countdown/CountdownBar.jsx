@@ -42,7 +42,7 @@ export default function CountdownBar() {
         gap: 12,
         alignItems: 'center',
         justifyItems: 'center',
-        width: '100%',
+        width: '90%',
         maxWidth: 980,
         padding: 18,
         borderRadius: 14,
