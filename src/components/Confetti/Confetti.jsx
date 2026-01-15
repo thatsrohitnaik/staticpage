@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './Confetti.css';
 
-export default function Confetti({ runOnMount = true, density = 1, duration = 20000 }) {
+export default function Confetti({ runOnMount = true, density = 5, duration = 200000 }) {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const particlesRef = useRef([]);

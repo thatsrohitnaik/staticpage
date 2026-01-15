@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './Fireworks.css';
 
-export default function Fireworks({ density = 1 }) {
+export default function Fireworks({ density = 100 }) {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const particlesRef = useRef([]);
@@ -23,8 +23,8 @@ export default function Fireworks({ density = 1 }) {
 
     function resize() {
       const rect = canvas.parentElement.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.floor(rect.width * devicePixelRatio));
-      canvas.height = Math.max(1, Math.floor(rect.height * devicePixelRatio));
+      canvas.width = Math.max(10, Math.floor(rect.width * devicePixelRatio));
+      canvas.height = Math.max(10, Math.floor(rect.height * devicePixelRatio));
       canvas.style.width = rect.width + 'px';
       canvas.style.height = rect.height + 'px';
       ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
@@ -66,14 +66,14 @@ export default function Fireworks({ density = 1 }) {
         rocket.y += rocket.vy;
         rocket.vy += 0.12; // gravity slows ascent
         // draw a small spark for rocket
-        particlesRef.current.push({ x: rocket.x, y: rocket.y, vx: rand(-0.6, 0.6), vy: rand(-0.6, 0.6), life: 200, age: 0, hue: rocket.hue, size: 1.6, fade: true });
+        particlesRef.current.push({ x: rocket.x, y: rocket.y, vx: rand(-0.6, 0.6), vy: rand(-0.6, 0.6), life: 2000, age: 0, hue: rocket.hue, size: 2, fade: false });
         if (rocket.y <= rocket.explodeY) {
           clearInterval(rocketInterval);
           spawnExplosion(rocket.x, rocket.y, rocket.hue);
         }
       }, 1000 / 60);
       // stop rocket if unmounted
-      setTimeout(() => clearInterval(rocketInterval), 2000);
+      setTimeout(() => clearInterval(rocketInterval), 20000);
     }
 
     function update(dt) {
