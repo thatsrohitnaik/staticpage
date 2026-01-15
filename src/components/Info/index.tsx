@@ -89,9 +89,9 @@ const Info = () => {
             Attire
         </h2>
         <p style={{width: "100%", textAlign: "center"}}>
-            If your out fit doesn’t make a little swish-swish sound when you walk,try again. </p>
+            If your out fit doesn’t make a little swish-swish sound when you walk, try again. </p>
         <p style={{width: "100%", textAlign: "center"}}>
-            Silk & Tradition
+            Silk & Traditional
         </p>
         {<Fireworks density={100}/>}
     </div>)
