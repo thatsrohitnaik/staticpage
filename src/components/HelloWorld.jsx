@@ -9,7 +9,7 @@ import Confetti from './Confetti/Confetti'
 // This works with Vite; it eagerly imports the modules so we get URLs.
 let svgUrls = []
 try {
-  const modules = import.meta.glob('../assets/images/*.svg', { eager: true })
+  const modules = import.meta.glob('../assets/images/invite.png', { eager: true })
   // modules is an object: { './b.svg': module, ... }
   svgUrls = Object.entries(modules)
     .sort(([a], [b]) => a.localeCompare(b))
