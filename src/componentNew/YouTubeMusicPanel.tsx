@@ -118,6 +118,21 @@ export default function YouTubeMusicPanel() {
                             {/* Search Section */}
                             <div className="w-full lg:w-1/2 p-6 border-b lg:border-b-0 lg:border-r border-gray-700 overflow-y-auto">
                                 <div className="space-y-4">
+                                    <div className="bg-yellow-900 bg-opacity-30 p-4 rounded-xl border border-yellow-700 mb-4">
+                                        <h4 className="text-yellow-300 font-semibold mb-2">⚠️ Important: Join as Collaborator First</h4>
+                                        <p className="text-yellow-100 text-sm mb-2">
+                                            Before adding music, you need to join as a collaborator to our playlist.
+                                        </p>
+                                        <a 
+                                            href="https://music.youtube.com/playlist?list=PLvdBhqmDlWWLAsLj04-9htz7KnnFLPu5W&jct=01K8Hno1FhF20K9RiQmUKQ" 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="inline-block bg-yellow-600 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                                        >
+                                            Click here to join as collaborator
+                                        </a>
+                                    </div>
+
                                     <div className="bg-blue-900 bg-opacity-20 p-4 rounded-xl border border-blue-800">
                                         <label className="block text-sm font-semibold text-blue-300 mb-2">Guest Name</label>
                                         <input

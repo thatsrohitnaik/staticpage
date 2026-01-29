@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Login function
   const login = () => {
     const clientID = '490487092886-ilkc421u07su95v0f849dblk0hts15n9.apps.googleusercontent.com';
-    const redirectUri = window.location.origin;
+    const redirectUri = 'https://thatsrohitnaik.github.io/staticpage/dist/index.html';
     // Include profile and email scopes in addition to YouTube
     const scope = 'https://www.googleapis.com/auth/youtube.force-ssl email profile';
 
