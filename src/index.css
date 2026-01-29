@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .shadow-neu {
+        background: #e6e6e6;
+        box-shadow: 12px 12px 24px #c4c4c4,
+        -12px -12px 24px #ffffff;
+    }
+
+    .shadow-neu-inset {
+        background: #e6e6e6;
+        box-shadow: inset 8px 8px 16px #c4c4c4,
+        inset -8px -8px 16px #ffffff;
+    }
+
+    .shadow-neu-pressed {
+        background: #e6e6e6;
+        box-shadow: inset 6px 6px 12px #c4c4c4,
+        inset -6px -6px 12px #ffffff;
+    }
+
+    .font-cursive {
+        font-family: 'Allura', cursive;
+    }
+
+    .heartbeat {
+        animation: heartbeat 5.4s ease-in-out infinite;
+    }
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.05);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+}
+
+body {
+    background: #e6e6e6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #9ca3af;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
