@@ -9,10 +9,13 @@ import Details from './componentNew/Details';
 import Footer from './componentNew/Footer';
 import MusicPlayer from './componentNew/MusicPlayer';
 // import SongRequestForm from './componentNew/SongRequestForm';
-import YouTubeMusicPanel from './componentNew/YouTubeMusicPanel';
+import PhotoUploadPanel from './componentNew/PhotoUploadPanel';
 import Header from './componentNew/Header';
 import { PlaylistProvider } from './context/PlaylistContext';
 import { AuthProvider } from './context/AuthContext';
+import SpotifyMusicPanel from "./componentNew/SpotifyMusicPanel.js";
+import BackgroundMusic from "./componentNew/BackgroundMusic.js";
+import MessagePanel from "./componentNew/MessagePanel.js";
 
 function App() {
     const [windowSize, setWindowSize] = useState({
@@ -32,15 +35,18 @@ function App() {
                         tweenDuration={1000}
                     />
                     <Header />
-                    <MusicPlayer />
+                    <BackgroundMusic/>
+                    {/*<MusicPlayer />*/}
                     {/*<SongRequestForm />*/}
-                    <YouTubeMusicPanel />
+                    <SpotifyMusicPanel />
+                    <PhotoUploadPanel />
                     <Hero />
                     <Countdown />
                     <Letter />
                     <Gallery />
                     {/*<RSVP />*/}
                     <Details />
+                    <MessagePanel/>
                     <Footer />
                 </div>
             </PlaylistProvider>

@@ -94,9 +94,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Login function
   const login = () => {
     const clientID = '490487092886-ilkc421u07su95v0f849dblk0hts15n9.apps.googleusercontent.com';
-    const redirectUri = 'https://thatsrohitnaik.github.io/staticpage/dist/index.html';
-    // Include profile and email scopes in addition to YouTube
-    const scope = 'https://www.googleapis.com/auth/youtube.force-ssl email profile';
+    const redirectUri = 'http://localhost:5173';
+    // Include profile, email, YouTube, and Google Photos scopes
+    const scope = 'https://www.googleapis.com/auth/youtube.force-ssl email profile https://www.googleapis.com/auth/photoslibrary.appendonly https://www.googleapis.com/auth/photoslibrary.readonly';
 
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
     window.location.href = authUrl;
