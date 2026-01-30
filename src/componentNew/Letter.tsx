@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Letter() {
-    const [guestName, setGuestName] = useState('');
+    const { user, isAuthenticated } = useAuth();
+    const [urlName, setUrlName] = useState<string | null>("F Friends & Family");
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const name = params.get('guest');
         if (name) {
-            setGuestName(decodeURIComponent(name));
+            setUrlName(decodeURIComponent(name));
         }
     }, []);
+
+    // Priority: 1. Logged in User, 2. URL Parameter, 3. Empty (original behavior)
+    const displayName = isAuthenticated && user?.name
+        ? user.name
+        : urlName;
 
     return (
         <section className="py-20 px-4 bg-gradient-to-b from-rose-50 to-pink-50">
@@ -23,15 +30,17 @@ export default function Letter() {
                     </div>
 
                     <div className="p-12 space-y-8">
-                        {guestName && (
+                        {/* Display name if either logged in or in URL */}
+                        {displayName && (
                             <p className="text-xl font-semibold text-gray-700 italic">
-                                Dear {guestName},
+                                Dear {displayName},
                             </p>
                         )}
 
                         <div className="prose prose-lg max-w-none">
                             <p className="text-gray-700 leading-relaxed text-lg font-light">
-                                As we begin our beautiful journey together, we are so excited to celebrate with the people we love! Your presence and blessings would add so much joy to our wedding day, we would love to see you there.</p>
+                                As we begin our beautiful journey together, we are so excited to celebrate with the people we love! Your presence and blessings would add so much joy to our wedding day, we would love to see you there.
+                            </p>
                         </div>
 
                         <div className="flex justify-center gap-2 text-rose-300">

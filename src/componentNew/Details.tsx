@@ -58,8 +58,7 @@ export default function Details() {
                         </div>
                         <h3 className="text-2xl font-light text-gray-700 mb-4">Dress Code</h3>
                         <p className="text-gray-600 leading-relaxed">
-                            Traditional formal attire. We invite you to wear elegant traditional wear or
-                            formal clothing to celebrate this auspicious occasion with us.
+                            Traditional attire. If your out fit doesn’t make a little swish-swish sound when you walk, try again.
                         </p>
                         <p className="text-gray-500 text-sm mt-4">
                             Come prepared for a joyous celebration filled with music, dance, and festive cheer.
@@ -70,7 +69,7 @@ export default function Details() {
                         <div className="w-16 h-16 rounded-full shadow-neu mb-6 flex items-center justify-center">
                             <Gift className="w-8 h-8 text-pink-300" />
                         </div>
-                        <h3 className="text-2xl font-light text-gray-700 mb-4">Haldi Venue</h3>
+                        <h3 className="text-2xl font-light text-gray-700 mb-4">Groom Haldi Venue</h3>
                         <a
                             href="https://maps.app.goo.gl/b9gcVuNKXmcPoCYS6"
                             target="_blank"
@@ -80,6 +79,28 @@ export default function Details() {
               <span>
                 Raghuvir Niwas<br />
                 Kundai, Ponda<br />
+                Goa
+              </span>
+                            <ExternalLink className="w-4 h-4 mt-1 flex-shrink-0" />
+                        </a>
+                        <p className="text-gray-500 text-sm">
+                            Wednesday, February 25th at 10:00 AM
+                        </p>
+                    </div>
+                    <div className="p-10 rounded-3xl shadow-neu">
+                        <div className="w-16 h-16 rounded-full shadow-neu mb-6 flex items-center justify-center">
+                            <Gift className="w-8 h-8 text-pink-300" />
+                        </div>
+                        <h3 className="text-2xl font-light text-gray-700 mb-4">Bride Haldi Venue</h3>
+                        <a
+                            href="https://maps.app.goo.gl/u866X4JRQFsJWJzG9"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-start gap-2 text-pink-300 underline hover:text-pink-400 transition-colors font-medium mb-4"
+                        >
+              <span>
+                Gracia's villa<br />
+                Miramar,<br />
                 Goa
               </span>
                             <ExternalLink className="w-4 h-4 mt-1 flex-shrink-0" />
