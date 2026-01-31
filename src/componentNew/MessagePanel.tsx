@@ -40,7 +40,7 @@ export default function MessagePanel() {
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-48 right-8 z-50 p-4 rounded-full transition-all text-pink-500 hover:scale-110
+                    className="fixed bottom-32 right-8 z-50 p-4 rounded-full transition-all text-pink-500 hover:scale-110
                     bg-gray-100 border border-gray-200
                     shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)]"
                 >

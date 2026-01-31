@@ -16,6 +16,9 @@ import { AuthProvider } from './context/AuthContext';
 import SpotifyMusicPanel from "./componentNew/SpotifyMusicPanel.js";
 import BackgroundMusic from "./componentNew/BackgroundMusic.js";
 import MessagePanel from "./componentNew/MessagePanel.js";
+import MusicSection from "./componentNew/MusicSection.js";
+import BlessingsSection from "./componentNew/BlessingsSection.js";
+import GuestGuide from "./componentNew/GuestGuide.js";
 
 function App() {
     const [windowSize, setWindowSize] = useState({
@@ -38,15 +41,19 @@ function App() {
                     <BackgroundMusic/>
                     {/*<MusicPlayer />*/}
                     {/*<SongRequestForm />*/}
-                    <SpotifyMusicPanel />
-                    <PhotoUploadPanel />
+                    {/*<MessagePanel/>*/}
+                    {/*<SpotifyMusicPanel />*/}
                     <Hero />
                     <Countdown />
                     <Letter />
-                    <Gallery />
+
+                    {/*<Gallery />*/}
                     {/*<RSVP />*/}
                     <Details />
-                    <MessagePanel/>
+                    <PhotoUploadPanel />
+                    <MusicSection/>
+                    <BlessingsSection/>
+                    <GuestGuide/>
                     <Footer />
                 </div>
             </PlaylistProvider>

@@ -8,13 +8,13 @@ export default function Footer() {
                     <Heart className="w-8 h-8 text-pink-300" fill="currentColor" />
                 </div>
                 <p className="text-gray-600 mb-2">
-                    We can't wait to celebrate with you
+                    Cheers to celebrating together soon.
                 </p>
                 <p className="text-gray-500 text-sm">
                     For questions, contact us at rohit24naik@gmail.com
                 </p>
                 <div className="mt-8 text-gray-400 text-sm">
-                    © 2026 Bhakti & Kaustubh
+                    © 2026 Bhakti & Rohit
                 </div>
             </div>
         </footer>

@@ -4,8 +4,8 @@ import { Music, X, ExternalLink, Search, PlusCircle, CheckCircle2 } from 'lucide
 export default function SpotifyMusicPanel() {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Replace with your actual Spotify Collaborative Playlist link
-    const SPOTIFY_PLAYLIST_LINK = "https://open.spotify.com/playlist/YOUR_PLAYLIST_ID";
+    // Your Spotify Collaborative Playlist link
+    const SPOTIFY_PLAYLIST_LINK = "https://open.spotify.com/playlist/your-playlist-id";
 
     return (
         <>
@@ -21,71 +21,83 @@ export default function SpotifyMusicPanel() {
 
             {isOpen && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-md">
-                    <div className="bg-gray-50 rounded-[2.5rem] max-w-md w-full overflow-hidden flex flex-col border border-white shadow-2xl">
+                    <div className="bg-gray-50 rounded-[2.5rem] max-w-md w-full overflow-hidden flex flex-col border border-white shadow-2xl max-h-[95vh]">
 
                         {/* Header */}
-                        <div className="p-6 flex items-center justify-between border-b border-gray-100 bg-white">
+                        <div className="p-6 flex items-center justify-between border-b border-gray-100 bg-white shrink-0">
                             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                <Music className="w-5 h-5 text-[#1DB954]" />
+                                <div className="bg-[#1DB954]/10 p-1.5 rounded-lg">
+                                    <Music className="w-5 h-5 text-[#1DB954]" />
+                                </div>
                                 Wedding Jukebox
                             </h2>
                             <button onClick={() => setIsOpen(false)}
                                     className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400
-                                bg-gray-100 border border-gray-200 hover:text-red-500 transition-colors">
+                                bg-gray-100 border border-gray-200 hover:text-red-500 transition-all hover:rotate-90">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         {/* Content Section */}
-                        <div className="p-8 overflow-y-auto">
-                            <div className="text-center mb-8">
-                                <div className="w-20 h-20 bg-green-50 rounded-3xl mx-auto mb-4 flex items-center justify-center
-                                shadow-[inset_4px_4px_8px_rgba(0,0,0,0.05),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]">
-                                    <Music className="w-10 h-10 text-[#1DB954]" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-800">Add Your Songs</h3>
-                                <p className="text-gray-600 mt-2 text-sm italic">Help us build the perfect wedding playlist!</p>
+                        <div className="p-6 overflow-y-auto custom-scrollbar">
+
+                            {/* Spotify Embed Player */}
+                            <div className="mb-8 rounded-2xl overflow-hidden shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] bg-white p-1 border border-gray-100">
+                                <iframe
+                                    data-testid="embed-iframe"
+                                    style={{"borderRadius":"16px"}}
+                                    src="https://open.spotify.com/embed/playlist/4EBz7UGsSPw0fTxBL4W09I?utm_source=generator"
+                                    width="100%"
+                                    height="352"
+                                    frameBorder="0"
+                                    allowFullScreen={true}
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                    loading="lazy"
+                                ></iframe>
                             </div>
 
-                            {/* Simplified Instructions */}
-                            <div className="space-y-4 mb-8">
-                                <div className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                    <div className="bg-[#1DB954] text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0">1</div>
-                                    <p className="text-gray-700 font-medium text-sm">Tap the <b>"Open Spotify"</b> button below.</p>
-                                </div>
+                            <div className="text-center mb-6">
+                                <h3 className="text-xl font-bold text-gray-800">Request a Song</h3>
+                                <p className="text-gray-500 text-sm italic mt-1">Help us build the perfect wedding vibe</p>
+                            </div>
 
-                                <div className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                    <div className="bg-[#1DB954] text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0">2</div>
-                                    <p className="text-gray-700 font-medium text-sm">
-                                        Tap <b>"Add songs"</b> or the <Search className="w-4 h-4 inline mb-1" /> icon.
-                                    </p>
-                                </div>
-
-                                <div className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                    <div className="bg-[#1DB954] text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0">3</div>
-                                    <p className="text-gray-700 font-medium text-sm">
-                                        Find your song and tap the <b>Plus</b> <PlusCircle className="w-4 h-4 inline mb-1" /> icon.
-                                    </p>
-                                </div>
+                            {/* Simplified Instructions - Neumorphic Cards */}
+                            <div className="space-y-3 mb-8">
+                                {[
+                                    { step: 1, text: <>Tap <b className="text-gray-900">"Open Spotify"</b> below</> },
+                                    { step: 2, text: <>Tap <b className="text-gray-900">"Add songs"</b> or the <Search className="w-3.5 h-3.5 inline mb-0.5" /> icon</> },
+                                    { step: 3, text: <>Tap the <PlusCircle className="w-3.5 h-3.5 inline mb-0.5" /> <b className="text-gray-900">Plus</b> next to your song</> }
+                                ].map((item) => (
+                                    <div key={item.step} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-[2px_2px_5px_rgba(0,0,0,0.02)] transition-transform hover:translate-x-1">
+                                        <div className="bg-[#1DB954] text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 shadow-md shadow-[#1DB954]/20">
+                                            {item.step}
+                                        </div>
+                                        <p className="text-gray-600 font-medium text-xs leading-relaxed">
+                                            {item.text}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
 
                             {/* CTA Button */}
-                            <a
-                                href={SPOTIFY_PLAYLIST_LINK}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-center gap-3 w-full py-5 bg-[#1DB954] text-white font-bold rounded-2xl
-                                shadow-[0_10px_20px_rgba(29,185,84,0.3)] hover:bg-[#1ed760] transition-all active:scale-95"
-                            >
-                                <ExternalLink className="w-5 h-5" />
-                                Open Spotify
-                            </a>
+                            <div className="sticky bottom-0 bg-gray-50 pt-2 pb-4">
+                                <a
+                                    href={SPOTIFY_PLAYLIST_LINK}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-3 w-full py-4 bg-[#1DB954] text-white font-bold rounded-2xl
+                                    shadow-[0_8px_20px_rgba(29,185,84,0.3)] hover:bg-[#1ed760] hover:shadow-[0_12px_24px_rgba(29,185,84,0.4)] transition-all active:scale-95"
+                                >
+                                    <ExternalLink className="w-5 h-5" />
+                                    Open Spotify App
+                                </a>
 
-                            <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-100">
-                                <p className="text-center text-[10px] text-green-600 uppercase font-bold tracking-widest flex items-center justify-center gap-2">
-                                    <CheckCircle2 className="w-3 h-3" />
-                                    Collaborative Playlist Active
-                                </p>
+                                <div className="mt-4 p-3 bg-green-50/50 rounded-xl border border-green-100/50 text-center">
+                                    <p className="text-[10px] text-green-600 uppercase font-bold tracking-[0.15em] flex items-center justify-center gap-2">
+                                        <CheckCircle2 className="w-3 h-3" />
+                                        Collaborative Mode Active
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
