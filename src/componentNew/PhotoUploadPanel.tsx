@@ -5,7 +5,7 @@ export default function PhotoUploadSection() {
     const SHARED_ALBUM_LINK = "https://photos.google.com/share/AF1QipNw1FJvGS2nqkgdMjuXuGDkv4vdYZs4D9sAqo9XydtV-KdQ93jVdyO2lMmTuH-D7A?key=TF9jR3lfWmNlVjJTbGFZWDFnalVqVEJKWVowNWlB";
 
     return (
-        <section className="py-20 px-4 bg-white/50">
+        <section className="py-20 px-4 bg-white/50" id="photo-upload">
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-5xl font-light text-gray-700 italic mb-4">Capture the Magic</h2>

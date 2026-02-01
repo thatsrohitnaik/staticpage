@@ -78,7 +78,7 @@ export default function BlessingsSection() {
     };
 
     return (
-        <section className="py-20 px-4 bg-gray-50/50">
+        <section className="py-20 px-4 bg-gray-50/50" id={"blessings-section"}>
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-5xl font-light text-gray-700 italic mb-4">Blessings & Wishes</h2>

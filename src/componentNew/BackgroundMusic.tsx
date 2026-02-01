@@ -24,7 +24,7 @@ export default function BackgroundMusic() {
                 // This is where your console message comes from
                 console.warn("Autoplay blocked: Waiting for user interaction.");
                 setIsPlaying(false);
-                setShowHint(true); // Show the hint to the user
+                setShowHint(false); // Show the hint to the user
             }
         };
 

@@ -5,7 +5,7 @@ export default function MusicSection() {
     const embedLink = "https://open.spotify.com/embed/playlist/4EBz7UGsSPw0fTxBL4W09I?utm_source=generator";
 
     return (
-        <section className="py-20 px-4 bg-white/50">
+        <section className="py-20 px-4 bg-white/50" id={"jukebox-section"}>
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-5xl font-light text-gray-700 mb-4">Wedding Jams</h2>

@@ -19,6 +19,7 @@ import MessagePanel from "./componentNew/MessagePanel.js";
 import MusicSection from "./componentNew/MusicSection.js";
 import BlessingsSection from "./componentNew/BlessingsSection.js";
 import GuestGuide from "./componentNew/GuestGuide.js";
+import {PhotoScrollButton} from "./componentNew/PhotoScrollButton.js";
 
 function App() {
     const [windowSize, setWindowSize] = useState({
@@ -49,11 +50,12 @@ function App() {
 
                     {/*<Gallery />*/}
                     {/*<RSVP />*/}
-                    <Details />
                     <PhotoUploadPanel />
                     <MusicSection/>
                     <BlessingsSection/>
                     <GuestGuide/>
+                    <Details />
+                    <PhotoScrollButton/>
                     <Footer />
                 </div>
             </PlaylistProvider>

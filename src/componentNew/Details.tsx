@@ -10,7 +10,7 @@ export default function Details() {
                 { name: "Bride: Gracia's Villa", sub: "Miramar, Panjim", link: "https://maps.app.goo.gl/u866X4JRQFsJWJzG9" }
             ],
             icon: <Sparkles className="w-6 h-6 text-orange-400" />,
-            note: "Start the festivities with turmeric and joy."
+            note: "Theme : Yellow, Start the festivities with turmeric and joy."
         },
         {
             title: "The Wedding Ceremony",
@@ -33,7 +33,7 @@ export default function Details() {
     ];
 
     return (
-        <section className="py-24 px-4 bg-white/30">
+        <section className="py-24 px-4 bg-white/30" id={"wedding-hero"}>
             <div className="max-w-5xl mx-auto">
                 <div className="text-center mb-20">
                     <span className="text-pink-400 font-bold tracking-[0.3em] uppercase text-xs">The Main Events</span>
