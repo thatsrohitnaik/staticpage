@@ -68,6 +68,7 @@ function App() {
                             {/* Legal Pages (Google Cloud Console links) */}
                             <Route path="staticpage/dist/privacy" element={<PrivacyPolicy />} />
                             <Route path="staticpage/dist/terms" element={<TermsOfService />} />
+                            <Route path="*" element={<MainWeddingPage />} />
                         </Routes>
                     </div>
                 </Router>
