@@ -1,63 +1,76 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Added this
 import Confetti from 'react-confetti';
 import Hero from './componentNew/Hero';
 import Countdown from './componentNew/Countdown';
 import Letter from './componentNew/Letter';
-import Gallery from './componentNew/Gallery';
-// import RSVP from './componentNew/RSVP';
-import Details from './componentNew/Details';
-import Footer from './componentNew/Footer';
-import MusicPlayer from './componentNew/MusicPlayer';
-// import SongRequestForm from './componentNew/SongRequestForm';
 import PhotoUploadPanel from './componentNew/PhotoUploadPanel';
 import Header from './componentNew/Header';
 import { PlaylistProvider } from './context/PlaylistContext';
 import { AuthProvider } from './context/AuthContext';
-import SpotifyMusicPanel from "./componentNew/SpotifyMusicPanel.js";
 import BackgroundMusic from "./componentNew/BackgroundMusic.js";
-import MessagePanel from "./componentNew/MessagePanel.js";
 import MusicSection from "./componentNew/MusicSection.js";
 import BlessingsSection from "./componentNew/BlessingsSection.js";
 import GuestGuide from "./componentNew/GuestGuide.js";
-import {PhotoScrollButton} from "./componentNew/PhotoScrollButton.js";
+import { PhotoScrollButton } from "./componentNew/PhotoScrollButton.js";
+import PrivacyPolicy from "./componentNew/PrivacyPolicy.js";
+import TermsOfService from "./componentNew/TermsOfService.js";
+import Details from './componentNew/Details';
+import Footer from './componentNew/Footer';
 
 function App() {
-    const [windowSize, setWindowSize] = useState({
+    const [windowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
 
+    // We create a "MainContent" component to keep the App logic clean
+    const MainWeddingPage = () => (
+        <>
+            <Confetti
+                width={windowSize.width}
+                height={windowSize.height}
+                numberOfPieces={150}
+                recycle={true}
+            />
+            <Header />
+            <BackgroundMusic />
+            <Hero />
+            <Countdown />
+            <Letter />
+            <PhotoUploadPanel />
+            <MusicSection />
+            <BlessingsSection />
+            <GuestGuide />
+            <Details />
+            <PhotoScrollButton />
+            <Footer />
+
+            {/* Tiny Legal Links in Footer for Google's Crawlers */}
+            <div className="pb-10 bg-gray-50 text-center">
+                <div className="flex justify-center gap-6 text-[10px] uppercase tracking-widest font-bold text-gray-400">
+                    <Link to="/privacy" className="hover:text-pink-500 transition-colors">Privacy Policy</Link>
+                    <Link to="/terms" className="hover:text-pink-500 transition-colors">Terms of Service</Link>
+                </div>
+            </div>
+        </>
+    );
+
     return (
         <AuthProvider>
             <PlaylistProvider>
-                <div className="min-h-screen">
-                    <Confetti
-                        width={windowSize.width}
-                        height={windowSize.height}
-                        numberOfPieces={150}
-                        recycle={true}
-                        tweenDuration={1000}
-                    />
-                    <Header />
-                    <BackgroundMusic/>
-                    {/*<MusicPlayer />*/}
-                    {/*<SongRequestForm />*/}
-                    {/*<MessagePanel/>*/}
-                    {/*<SpotifyMusicPanel />*/}
-                    <Hero />
-                    <Countdown />
-                    <Letter />
-
-                    {/*<Gallery />*/}
-                    {/*<RSVP />*/}
-                    <PhotoUploadPanel />
-                    <MusicSection/>
-                    <BlessingsSection/>
-                    <GuestGuide/>
-                    <Details />
-                    <PhotoScrollButton/>
-                    <Footer />
-                </div>
+                <Router> {/* Wrap everything in a Router */}
+                    <div className="min-h-screen">
+                        <Routes>
+                            {/* Main Wedding Site */}
+                            <Route path="staticpage/dist/" element={<MainWeddingPage />} />
+                            <Route path="/" element={<MainWeddingPage />} />
+                            {/* Legal Pages (Google Cloud Console links) */}
+                            <Route path="/privacy" element={<PrivacyPolicy />} />
+                            <Route path="/terms" element={<TermsOfService />} />
+                        </Routes>
+                    </div>
+                </Router>
             </PlaylistProvider>
         </AuthProvider>
     );
