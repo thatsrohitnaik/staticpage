@@ -33,9 +33,13 @@ export default function MusicSection() {
                     {/* Join Playlist CTA - Takes 2 columns */}
                     <div className="lg:col-span-2 flex flex-col h-full gap-6">
                         <div className="p-10 rounded-3xl shadow-neu bg-white flex-1 flex flex-col justify-center items-center text-center">
+                            <a href={playlistJoinLink}
+                               target="_blank"
+                               rel="noopener noreferrer">
                             <div className="w-20 h-20 rounded-full shadow-neu mb-8 flex items-center justify-center bg-pink-50">
                                 <PlusCircle className="w-10 h-10 text-pink-300" />
                             </div>
+                            </a>
                             <h3 className="text-3xl font-light text-gray-700 mb-4">Add Your Music</h3>
                             <p className="text-gray-600 mb-8 leading-relaxed">
                                 Join our collaborative playlist on Spotify and contribute to our celebration.
