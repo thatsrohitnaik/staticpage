@@ -49,12 +49,12 @@ function App() {
             <Footer />
 
             {/* Tiny Legal Links in Footer for Google's Crawlers */}
-            <div className="pb-10 bg-gray-50 text-center">
-                <div className="flex justify-center gap-6 text-[10px] uppercase tracking-widest font-bold text-gray-400">
-                    <Link to="/staticpage/dist/privacy" className="hover:text-pink-500 transition-colors">Privacy Policy</Link>
-                    <Link to="/staticpage/dist/terms" className="hover:text-pink-500 transition-colors">Terms of Service</Link>
-                </div>
-            </div>
+            {/*<div className="pb-10 bg-gray-50 text-center">*/}
+            {/*    <div className="flex justify-center gap-6 text-[10px] uppercase tracking-widest font-bold text-gray-400">*/}
+            {/*        <Link to="/staticpage/dist/privacy" className="hover:text-pink-500 transition-colors">Privacy Policy</Link>*/}
+            {/*        <Link to="/staticpage/dist/terms" className="hover:text-pink-500 transition-colors">Terms of Service</Link>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </>
     );
 
