@@ -17,6 +17,7 @@ import PrivacyPolicy from "./componentNew/PrivacyPolicy.js";
 import TermsOfService from "./componentNew/TermsOfService.js";
 import Details from './componentNew/Details';
 import Footer from './componentNew/Footer';
+import Gallery from "./componentNew/Gallery.js";
 
 function App() {
     const [windowSize] = useState({
@@ -38,6 +39,7 @@ function App() {
             <Hero />
             <Countdown />
             <Letter />
+            <Gallery/>
             <PhotoUploadPanel />
             <MusicSection />
             <BlessingsSection />
