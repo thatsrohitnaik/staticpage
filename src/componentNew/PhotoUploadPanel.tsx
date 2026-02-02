@@ -71,6 +71,10 @@ export default function PhotoUploadSection() {
 
                     {/* RIGHT: Visual CTA & Fun Note */}
                     <div className="flex flex-col gap-8">
+                        <a
+                            href={SHARED_ALBUM_LINK}
+                            target="_blank"
+                            rel="noopener noreferrer">
                         <div className="relative p-12 rounded-[2.5rem] bg-purple-50 shadow-neu overflow-hidden flex flex-col items-center text-center">
                             {/* Decorative Background Element */}
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-200/30 rounded-full blur-3xl"></div>
@@ -89,6 +93,7 @@ export default function PhotoUploadSection() {
                                 <span className="text-[11px] text-purple-600 uppercase font-black tracking-widest">Safe & Private Album</span>
                             </div>
                         </div>
+                        </a>
 
                         {/* Fun Tip Card */}
                         <div className="p-8 rounded-3xl bg-white border border-gray-100 shadow-sm flex items-start gap-4 italic text-gray-500 text-sm">
