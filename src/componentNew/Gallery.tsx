@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import us from '../assets/images/us.jpeg';
+// import us from '../assets/images/us.jpeg';
 import patrika from "../assets/images/patrika.png";
 
 export default function Gallery() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-    const photos = [us, patrika];
+    const photos = [patrika];
 
     const openLightbox = (index: number) => setActiveIndex(index);
     const closeLightbox = () => setActiveIndex(null);
