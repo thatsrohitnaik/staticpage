@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Letter() {
     const { user, isAuthenticated } = useAuth();
-    const [urlName, setUrlName] = useState<string | null>("F Friends & Family");
+    const [urlName, setUrlName] = useState<string | null>("Friends & Family");
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
