@@ -3,7 +3,6 @@ import { Music, PlusCircle, ExternalLink } from 'lucide-react';
 export default function MusicSection() {
     const playlistJoinLink = "https://open.spotify.com/playlist/4EBz7UGsSPw0fTxBL4W09I?si=xg1nzLoLS7aqqxeiGzIr0Q&pi=FsYGmxKEQZC8Y&pt=5cb99abb093d4c3c0416d98cfc6e7a6f";
     const embedLink = "https://open.spotify.com/embed/playlist/4EBz7UGsSPw0fTxBL4W09I?utm_source=generator";
-
     return (
         <section className="py-20 px-4 bg-white/50" id={"jukebox-section"}>
             <div className="max-w-6xl mx-auto">
