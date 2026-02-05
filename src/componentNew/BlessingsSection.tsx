@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, Heart, Loader2, Lock, MessageSquare } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { Send, Heart, Loader2, MessageSquare, UserCircle } from 'lucide-react';
 
 export default function BlessingsSection() {
     const [receivedMessages, setReceivedMessages] = useState([]);
@@ -9,52 +8,54 @@ export default function BlessingsSection() {
     const [isSending, setIsSending] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { user, isAuthenticated, login } = useAuth();
+    // Guest State
+    const [guestName, setGuestName] = useState('');
+    const [isNameSet, setIsNameSet] = useState(false);
 
-    // Deployment URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKZ-kxF-dPiO5uqN9JyYh0JrheVXdh_K14NB5lUSFNMWqtGOXlQNV-yWdYFmzqX2-Ghg/exec';
+
+    // 1. Check for URL Param on mount
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const nameFromUrl = params.get('guest');
+
+        if (nameFromUrl) {
+            setGuestName(nameFromUrl);
+            setIsNameSet(true);
+        }
+        fetchContent();
+    }, []);
 
     const fetchContent = async () => {
         setIsLoading(true);
         try {
             const response = await fetch(SCRIPT_URL);
             const data = await response.json();
-
             let rawMessages = [];
 
-            // Handle both object-wrapped and direct-array responses
             if (data && Array.isArray(data.messages)) {
                 rawMessages = data.messages;
             } else if (Array.isArray(data)) {
                 rawMessages = data;
             }
 
-            // FILTER: Only show messages where public is true
             const publicMessages = rawMessages.filter(msg =>
-                msg.public === true ||
-                msg.public === "true" ||
-                msg.public === "TRUE"
+                msg.public === true || msg.public === "true" || msg.public === "TRUE"
             );
 
             setReceivedMessages(publicMessages);
-
             if (data && typeof data.voteCount === 'number') {
                 setVoteCount(data.voteCount);
             }
         } catch (error) {
             console.error("Error loading data:", error);
-            setReceivedMessages([]);
         } finally {
             setIsLoading(false);
         }
     };
 
-    useEffect(() => {
-        fetchContent();
-    }, []);
-
     const handleSendMessage = async () => {
-        if (!message.trim()) return;
+        if (!message.trim() || !guestName.trim()) return;
         setIsSending(true);
         try {
             await fetch(SCRIPT_URL, {
@@ -62,13 +63,13 @@ export default function BlessingsSection() {
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: user?.name,
-                    email: user?.email,
+                    name: guestName,
                     message: message,
                     action: 'message'
                 })
             });
             setMessage('');
+            // Optional: Show a "Thank you" toast here
             setTimeout(fetchContent, 2000);
         } catch (error) {
             console.error("Failed to send message", error);
@@ -90,32 +91,56 @@ export default function BlessingsSection() {
                 </div>
 
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
-                    {/* Input Form */}
-                    <div className="p-10 rounded-[2.5rem] bg-white shadow-neu border border-white">
+                    {/* Input Form Area */}
+                    <div className="p-10 rounded-[2.5rem] bg-white shadow-xl border border-white">
                         <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
                             <Heart className="w-6 h-6 text-pink-500 fill-pink-500" />
                             Send Your Love
                         </h3>
 
-                        {!isAuthenticated ? (
-                            <div className="text-center py-8">
-                                <Lock className="w-10 h-10 text-gray-300 mx-auto mb-4" />
-                                <p className="text-gray-500 mb-6">Sign in to leave your blessings</p>
-                                <button onClick={login} className="px-8 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:shadow-lg transition-all">
-                                    Sign in with Google
+                        {!isNameSet ? (
+                            /* Step 1: Ask for Name if not in URL */
+                            <div className="space-y-6 animate-in fade-in duration-500">
+                                <div className="text-center mb-4">
+                                    <UserCircle className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                                    <p className="text-gray-500">Please enter your name to leave a blessing</p>
+                                </div>
+                                <input
+                                    type="text"
+                                    value={guestName}
+                                    onChange={(e) => setGuestName(e.target.value)}
+                                    placeholder="Your Full Name"
+                                    className="w-full p-4 bg-gray-50 rounded-2xl border border-gray-100 outline-none focus:ring-2 ring-pink-200 transition-all text-center text-lg shadow-inner"
+                                />
+                                <button
+                                    onClick={() => guestName.trim() && setIsNameSet(true)}
+                                    className="w-full py-4 bg-gray-800 text-white font-bold rounded-2xl hover:bg-black transition-all"
+                                >
+                                    Continue
                                 </button>
                             </div>
                         ) : (
-                            <div className="space-y-6">
-                                <div className="flex items-center gap-3">
-                                    <img src={user?.picture} className="w-8 h-8 rounded-full shadow-sm" alt="profile" />
-                                    <span className="text-sm font-medium text-gray-600">Writing as <b>{user?.name}</b></span>
+                            /* Step 2: Message Input */
+                            <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-500">
+                                            <Heart className="w-4 h-4 fill-current" />
+                                        </div>
+                                        <span className="text-sm font-medium text-gray-600">Writing as <b>{guestName}</b></span>
+                                    </div>
+                                    <button
+                                        onClick={() => setIsNameSet(false)}
+                                        className="text-xs text-gray-400 hover:text-pink-500 underline underline-offset-2"
+                                    >
+                                        Edit Name
+                                    </button>
                                 </div>
                                 <textarea
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    placeholder="Your wishes..."
-                                    className="w-full h-40 p-6 bg-gray-100 rounded-[2rem] border-none outline-none focus:ring-2 ring-pink-200 transition-all resize-none shadow-inner text-gray-700"
+                                    placeholder="Write your wishes for the couple..."
+                                    className="w-full h-40 p-6 bg-gray-50 rounded-[2rem] border-none outline-none focus:ring-2 ring-pink-200 transition-all resize-none shadow-inner text-gray-700"
                                 />
                                 <button
                                     onClick={handleSendMessage}
@@ -128,7 +153,7 @@ export default function BlessingsSection() {
                         )}
                     </div>
 
-                    {/* Feed */}
+                    {/* Feed Section */}
                     <div className="space-y-6">
                         <div className="flex items-center justify-between mb-4 px-2">
                             <span className="flex items-center gap-2 text-gray-500 font-medium">

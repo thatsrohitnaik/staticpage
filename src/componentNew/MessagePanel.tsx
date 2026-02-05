@@ -1,27 +1,38 @@
-import { useState } from 'react';
-import { Send, MessageCircle, X, Heart, Loader2, Lock } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
+import { Send, MessageCircle, X, Heart, Loader2, User } from 'lucide-react';
 
 export default function MessagePanel() {
     const [isOpen, setIsOpen] = useState(false);
+    const [guestName, setGuestName] = useState('');
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isSent, setIsSent] = useState(false);
+    const [isNameStep, setIsNameStep] = useState(true);
 
-    const { user, isAuthenticated, login } = useAuth();
+    // 1. Check URL for guest name on mount
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const nameFromUrl = params.get('guest');
+
+        if (nameFromUrl) {
+            setGuestName(nameFromUrl);
+            setIsNameStep(false);
+        }
+    }, []);
+
     const handleSendMessage = async () => {
-        if (!message.trim()) return;
+        if (!message.trim() || !guestName.trim()) return;
 
         setIsSending(true);
         try {
             await fetch('https://script.google.com/macros/s/AKfycbyKZ-kxF-dPiO5uqN9JyYh0JrheVXdh_K14NB5lUSFNMWqtGOXlQNV-yWdYFmzqX2-Ghg/exec', {
                 method: 'POST',
-                mode: 'no-cors', // Essential for Google Scripts
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: user?.name,
-                    email: user?.email,
-                    message: message
+                    name: guestName,
+                    message: message,
+                    date: new Date().toLocaleString()
                 })
             });
 
@@ -40,9 +51,7 @@ export default function MessagePanel() {
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-32 right-8 z-50 p-4 rounded-full transition-all text-pink-500 hover:scale-110
-                    bg-gray-100 border border-gray-200
-                    shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)]"
+                    className="fixed bottom-32 right-8 z-50 p-4 rounded-full transition-all text-pink-500 hover:scale-110 bg-white border border-gray-200 shadow-xl"
                 >
                     <MessageCircle className="w-6 h-6" />
                 </button>
@@ -59,37 +68,20 @@ export default function MessagePanel() {
                                 Send Blessings
                             </h2>
                             <button onClick={() => setIsOpen(false)}
-                                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400
-                                bg-gray-100 border border-gray-200 hover:text-red-500 transition-colors">
+                                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 bg-gray-100 hover:text-red-500 transition-colors">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         <div className="p-8">
-                            {!isAuthenticated ? (
-                                /* Login Prompt */
-                                <div className="text-center py-6">
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center
-                                    shadow-[inset_2px_2px_5px_rgba(0,0,0,0.1),inset_-2px_-2px_5px_rgba(255,255,255,0.8)]">
-                                        <Lock className="w-6 h-6 text-gray-400" />
-                                    </div>
-                                    <h3 className="text-lg font-bold text-gray-700 mb-2">Sign in to leave a message</h3>
-                                    <p className="text-sm text-gray-500 mb-6">We'd love to know who sent us these beautiful wishes!</p>
-                                    <button
-                                        onClick={login}
-                                        className="px-8 py-3 bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:bg-blue-700 transition-all"
-                                    >
-                                        Sign in with Google
-                                    </button>
-                                </div>
-                            ) : isSent ? (
+                            {isSent ? (
                                 /* Success State */
                                 <div className="text-center py-10 animate-in zoom-in duration-300">
                                     <div className="w-20 h-20 bg-green-50 rounded-full mx-auto mb-4 flex items-center justify-center">
                                         <Heart className="w-10 h-10 text-green-500 fill-green-500 animate-pulse" />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-gray-800">Thank You, {user?.name.split(' ')[0]}!</h3>
-                                    <p className="text-gray-600 mt-2">Your message has been sent to the couple.</p>
+                                    <h3 className="text-2xl font-bold text-gray-800">Thank You, {guestName}!</h3>
+                                    <p className="text-gray-600 mt-2">Rohit & Bhakti will cherish your message.</p>
                                     <button
                                         onClick={() => setIsSent(false)}
                                         className="mt-6 text-pink-500 font-semibold text-sm underline underline-offset-4"
@@ -97,22 +89,51 @@ export default function MessagePanel() {
                                         Send another one
                                     </button>
                                 </div>
+                            ) : isNameStep ? (
+                                /* Step 1: Name Entry (If not in URL) */
+                                <div className="space-y-6 text-center">
+                                    <div className="w-16 h-16 bg-pink-50 rounded-full mx-auto flex items-center justify-center">
+                                        <User className="w-8 h-8 text-pink-500" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-bold text-gray-800">Welcome!</h3>
+                                        <p className="text-sm text-gray-500">May we know who is sending the wishes?</p>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={guestName}
+                                        onChange={(e) => setGuestName(e.target.value)}
+                                        placeholder="Enter your name"
+                                        className="w-full p-4 bg-white rounded-2xl border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500 transition-all text-center text-lg"
+                                    />
+                                    <button
+                                        onClick={() => guestName.trim() && setIsNameStep(false)}
+                                        disabled={!guestName.trim()}
+                                        className="w-full py-4 bg-gray-800 text-white font-bold rounded-2xl disabled:opacity-50"
+                                    >
+                                        Continue
+                                    </button>
+                                </div>
                             ) : (
-                                /* Message Form */
+                                /* Step 2: Message Form */
                                 <div className="space-y-6">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <img src={user?.picture} className="w-8 h-8 rounded-full shadow-sm" alt="profile" />
-                                        <span className="text-sm font-medium text-gray-600">Writing as <b>{user?.name}</b></span>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm font-medium text-gray-500 italic">Writing as <b>{guestName}</b></span>
+                                        <button
+                                            onClick={() => setIsNameStep(true)}
+                                            className="text-xs text-blue-500 hover:underline"
+                                        >
+                                            Change Name
+                                        </button>
                                     </div>
 
                                     <div className="relative">
                                         <textarea
                                             value={message}
                                             onChange={(e) => setMessage(e.target.value)}
-                                            placeholder="Write your wishes for Rohit & Bhakti here..."
-                                            className="w-full h-40 p-5 bg-gray-100 rounded-3xl border-none outline-none text-gray-700 placeholder:text-gray-400
-                                            shadow-[inset_4px_4px_8px_rgba(0,0,0,0.05),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]
-                                            focus:shadow-[inset_6px_6px_12px_rgba(0,0,0,0.08),inset_-6px_-6px_12px_rgba(255,255,255,1)] transition-all resize-none"
+                                            placeholder={`Write your wishes for Rohit & Bhakti here...`}
+                                            className="w-full h-40 p-5 bg-white rounded-3xl border border-gray-100 outline-none text-gray-700 placeholder:text-gray-400
+                                            shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05)] focus:border-pink-200 transition-all resize-none"
                                         />
                                     </div>
 
@@ -120,7 +141,7 @@ export default function MessagePanel() {
                                         onClick={handleSendMessage}
                                         disabled={!message.trim() || isSending}
                                         className="flex items-center justify-center gap-3 w-full py-4 bg-pink-500 text-white font-bold rounded-2xl
-                                        shadow-[0_10px_20px_rgba(236,72,153,0.3)] hover:bg-pink-600 transition-all active:scale-95 disabled:opacity-50 disabled:grayscale"
+                                        shadow-lg hover:bg-pink-600 transition-all active:scale-95 disabled:opacity-50"
                                     >
                                         {isSending ? (
                                             <Loader2 className="w-5 h-5 animate-spin" />
