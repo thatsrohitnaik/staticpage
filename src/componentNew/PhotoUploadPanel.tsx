@@ -1,7 +1,7 @@
 import { CheckCircle2, Music } from 'lucide-react';
 
 export default function PhotoUploadSection() {
-    const SHARED_ALBUM_LINK = "https://photos.google.com/share/AF1QipNw1FJvGS2nqkgdMjuXuGDkv4vdYZs4D9sAqo9XydtV-KdQ93jVdyO2lMmTuH-D7A?key=TF9jR3lfWmNlVjJTbGFZWDFnalVqVEJKWVowNWlB";
+    const SHARED_ALBUM_LINK = "https://photos.app.goo.gl/SgLJ911EaUWJ3mUx6";
 
     return (
         <section className="py-20 px-4 bg-white/50" id="photo-upload">

@@ -46,7 +46,6 @@ export default function Letter() {
                         <div className="flex justify-center gap-2 text-rose-300">
                             <Heart className="w-5 h-5 fill-current" />
                             <Heart className="w-5 h-5 fill-current" />
-                            <Heart className="w-5 h-5 fill-current" />
                         </div>
 
                         <div className="text-center pt-6 border-t border-gray-200">
