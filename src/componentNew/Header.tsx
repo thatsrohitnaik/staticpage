@@ -10,7 +10,7 @@ export default function Header() {
           <span className="text-xl font-cursive text-gray-700">Bhakti & Rohit</span>
         </div>
         
-        <LoginButton />
+        {/*<LoginButton />*/}
       </div>
     </header>
   );

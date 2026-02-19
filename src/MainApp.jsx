@@ -39,12 +39,12 @@ function App() {
             <Hero />
             <Countdown />
             <Letter />
-            <Gallery/>
+            <BlessingsSection />
             <PhotoUploadPanel />
             <MusicSection />
-            <BlessingsSection />
             <GuestGuide />
             <Details />
+            <Gallery/>
             <PhotoScrollButton />
             <Footer />
 
