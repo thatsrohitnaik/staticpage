@@ -1,108 +1,115 @@
-import { useState, useEffect, useRef } from 'react';
-import { X, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, Plus, ExternalLink } from 'lucide-react';
 
-// Use Vite's glob import to get all images from the folder
 // @ts-ignore
 const imageModules = import.meta.glob('../assets/images/templerun/*.{png,jpg,jpeg,webp}', {
     eager: true,
     import: 'default',
 });
 
-// Convert the object into an array of strings (the resolved URLs)
 const allPhotos = Object.values(imageModules) as string[];
 
 export default function Gallery() {
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const [showAll, setShowAll] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-    // Show only 6 images initially, or all if 'showAll' is true
-    const displayedPhotos = showAll ? allPhotos : allPhotos.slice(0, 6);
+    const nextSlide = useCallback(() => {
+        setCurrentIndex((prev) => (prev === allPhotos.length - 1 ? 0 : prev + 1));
+    }, []);
 
-    const openLightbox = (index: number) => setActiveIndex(index);
-    const closeLightbox = () => setActiveIndex(null);
-
-    const showNext = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setActiveIndex((prev) => (prev !== null && prev < allPhotos.length - 1 ? prev + 1 : 0));
+    const prevSlide = () => {
+        setCurrentIndex((prev) => (prev === 0 ? allPhotos.length - 1 : prev - 1));
     };
 
-    const showPrev = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setActiveIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : allPhotos.length - 1));
-    };
+    // Auto-play effect
+    useEffect(() => {
+        if (!isAutoPlaying) return;
+        const interval = setInterval(nextSlide, 5000); // Change image every 5 seconds
+        return () => clearInterval(interval);
+    }, [isAutoPlaying, nextSlide]);
 
     return (
-        <section id="gallery" className="py-20 px-4 bg-gray-50/50">
-            <div className="max-w-6xl mx-auto">
-                <h2 className="text-5xl font-light text-center mb-16 text-gray-700 italic">
-                    Our Moments
-                </h2>
+        <section id="gallery" className="py-24 px-4 bg-[#faf9f6]">
+            <div className="max-w-5xl mx-auto">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                    <div className="text-left">
+                        <span className="text-pink-300 uppercase tracking-[0.3em] text-[10px] font-bold block mb-2">The Journey</span>
+                        <h2 className="text-5xl md:text-6xl font-serif italic text-gray-800 tracking-tighter">
+                            Our Moments
+                        </h2>
+                    </div>
 
-                {/* Grid Display */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    {displayedPhotos.map((photo, index) => (
+                    {/* Add More Button linking to Google Photos */}
+                    <a
+                        href="https://photos.app.goo.gl/SgLJ911EaUWJ3mUx6"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-3 px-6 py-3 bg-white border border-gray-100 rounded-full shadow-neu-sm hover:shadow-neu transition-all duration-500 text-gray-600 hover:text-pink-500"
+                    >
+                        <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
+                        <span className="text-xs font-bold uppercase tracking-widest">Add Photos</span>
+                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                </div>
+
+                {/* Main Slider Container */}
+                <div
+                    className="relative aspect-[4/5] md:aspect-[16/9] w-full rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100 group"
+                    onMouseEnter={() => setIsAutoPlaying(false)}
+                    onMouseLeave={() => setIsAutoPlaying(true)}
+                >
+                    {/* Images with Fade Transition */}
+                    {allPhotos.map((photo, index) => (
                         <div
                             key={index}
-                            onClick={() => openLightbox(index)}
-                            className="aspect-square rounded-3xl shadow-md overflow-hidden cursor-pointer group bg-gray-200"
+                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                                index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                            }`}
                         >
                             <img
                                 src={photo}
-                                loading="lazy" // Native Browser Lazy Loading
-                                alt={`Temple run moment ${index + 1}`}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                alt={`Moment ${index + 1}`}
+                                className="w-full h-full object-cover transform scale-105"
                             />
+                            {/* Subtle Overlay for contrast */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
                         </div>
                     ))}
 
-                    {/* "View More" Card - Only shows if not showing all and there are more than 6 pics */}
-                    {!showAll && allPhotos.length > 6 && (
-                        <div
-                            onClick={() => setShowAll(true)}
-                            className="aspect-square rounded-3xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-white hover:border-gray-400 transition-all group"
-                        >
-                            <div className="p-4 bg-gray-100 rounded-full group-hover:scale-110 transition-transform">
-                                <Plus className="w-8 h-8 text-gray-500" />
-                            </div>
-                            <span className="mt-4 text-gray-600 font-medium">View {allPhotos.length - 6} More</span>
-                        </div>
-                    )}
+                    {/* Navigation Arrows */}
+                    <button
+                        onClick={prevSlide}
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:text-gray-900"
+                    >
+                        <ChevronLeft className="w-6 h-6" />
+                    </button>
+
+                    <button
+                        onClick={nextSlide}
+                        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:text-gray-900"
+                    >
+                        <ChevronRight className="w-6 h-6" />
+                    </button>
+
+                    {/* Image Counter Badge */}
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 px-4 py-1.5 bg-black/20 backdrop-blur-lg rounded-full border border-white/20 text-white/90 text-[10px] font-bold tracking-widest uppercase">
+                        {currentIndex + 1} / {allPhotos.length}
+                    </div>
+                </div>
+
+                {/* Thumbnails Indicator */}
+                <div className="flex justify-center gap-2 mt-8">
+                    {allPhotos.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentIndex(index)}
+                            className={`h-1 transition-all duration-500 rounded-full ${
+                                index === currentIndex ? 'w-8 bg-pink-400' : 'w-2 bg-gray-200'
+                            }`}
+                        />
+                    ))}
                 </div>
             </div>
-
-            {/* Lightbox Slider Overlay */}
-            {activeIndex !== null && (
-                <div
-                    className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
-                    onClick={closeLightbox}
-                >
-                    <button onClick={closeLightbox} className="absolute top-8 right-8 text-white/70 hover:text-white z-10">
-                        <X className="w-10 h-10" />
-                    </button>
-
-                    <button onClick={showPrev} className="absolute left-4 p-3 rounded-full bg-white/5 text-white hover:bg-white/20">
-                        <ChevronLeft className="w-10 h-10" />
-                    </button>
-
-                    <button onClick={showNext} className="absolute right-4 p-3 rounded-full bg-white/5 text-white hover:bg-white/20">
-                        <ChevronRight className="w-10 h-10" />
-                    </button>
-
-                    <div className="max-w-5xl w-full h-[85vh] flex items-center justify-center">
-                        <img
-                            key={activeIndex} // Force re-animation on change
-                            src={allPhotos[activeIndex]}
-                            alt="Expanded moment"
-                            className="max-w-full max-h-full object-contain shadow-2xl animate-in fade-in zoom-in-95 duration-300"
-                            onClick={(e) => e.stopPropagation()}
-                        />
-                    </div>
-
-                    <div className="absolute bottom-8 px-6 py-2 bg-white/5 rounded-full text-white/60 text-sm">
-                        {activeIndex + 1} / {allPhotos.length}
-                    </div>
-                </div>
-            )}
         </section>
     );
 }
