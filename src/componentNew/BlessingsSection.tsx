@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, Heart, Loader2, MessageSquare, UserCircle } from 'lucide-react';
+import { Send, Heart, Loader2, MessageSquare, UserCircle, Quote } from 'lucide-react';
 
 export default function BlessingsSection() {
     const [receivedMessages, setReceivedMessages] = useState([]);
@@ -8,13 +8,15 @@ export default function BlessingsSection() {
     const [isSending, setIsSending] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Slideshow State
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     // Guest State
     const [guestName, setGuestName] = useState('');
     const [isNameSet, setIsNameSet] = useState(false);
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKZ-kxF-dPiO5uqN9JyYh0JrheVXdh_K14NB5lUSFNMWqtGOXlQNV-yWdYFmzqX2-Ghg/exec';
 
-    // 1. Check for URL Param on mount
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const nameFromUrl = params.get('guest');
@@ -25,6 +27,16 @@ export default function BlessingsSection() {
         }
         fetchContent();
     }, []);
+
+    // --- SLIDESHOW LOGIC ---
+    useEffect(() => {
+        if (receivedMessages.length > 1) {
+            const timer = setInterval(() => {
+                setCurrentIndex((prevIndex) => (prevIndex + 1) % receivedMessages.length);
+            }, 5000); // Changes message every 5 seconds
+            return () => clearInterval(timer);
+        }
+    }, [receivedMessages]);
 
     const fetchContent = async () => {
         setIsLoading(true);
@@ -69,7 +81,6 @@ export default function BlessingsSection() {
                 })
             });
             setMessage('');
-            // Optional: Show a "Thank you" toast here
             setTimeout(fetchContent, 2000);
         } catch (error) {
             console.error("Failed to send message", error);
@@ -84,23 +95,22 @@ export default function BlessingsSection() {
                 <div className="text-center mb-16">
                     <h2 className="text-5xl font-light text-gray-700 italic mb-4">Blessings & Wishes</h2>
                     {voteCount > 0 && (
-                        <p className="text-pink-400 font-medium tracking-wide">
+                        <p className="text-pink-400 font-medium tracking-wide animate-pulse">
                             Join {voteCount} others in celebrating Rohit & Bhakti!
                         </p>
                     )}
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 items-start">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Input Form Area */}
-                    <div className="p-10 rounded-[2.5rem] bg-white shadow-xl border border-white">
+                    <div className="p-10 rounded-[2.5rem] bg-white shadow-xl border border-white h-full">
                         <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
                             <Heart className="w-6 h-6 text-pink-500 fill-pink-500" />
                             Send Your Love
                         </h3>
 
                         {!isNameSet ? (
-                            /* Step 1: Ask for Name if not in URL */
-                            <div className="space-y-6 animate-in fade-in duration-500">
+                            <div className="space-y-6">
                                 <div className="text-center mb-4">
                                     <UserCircle className="w-12 h-12 text-gray-300 mx-auto mb-2" />
                                     <p className="text-gray-500">Please enter your name to leave a blessing</p>
@@ -114,38 +124,27 @@ export default function BlessingsSection() {
                                 />
                                 <button
                                     onClick={() => guestName.trim() && setIsNameSet(true)}
-                                    className="w-full py-4 bg-gray-800 text-white font-bold rounded-2xl hover:bg-black transition-all"
+                                    className="w-full py-4 bg-gray-800 text-white font-bold rounded-2xl hover:bg-black transition-all shadow-lg"
                                 >
                                     Continue
                                 </button>
                             </div>
                         ) : (
-                            /* Step 2: Message Input */
-                            <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
+                            <div className="space-y-6">
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-500">
-                                            <Heart className="w-4 h-4 fill-current" />
-                                        </div>
-                                        <span className="text-sm font-medium text-gray-600">Writing as <b>{guestName}</b></span>
-                                    </div>
-                                    <button
-                                        onClick={() => setIsNameSet(false)}
-                                        className="text-xs text-gray-400 hover:text-pink-500 underline underline-offset-2"
-                                    >
-                                        Edit Name
-                                    </button>
+                                    <span className="text-sm font-medium text-gray-600">Writing as <b>{guestName}</b></span>
+                                    <button onClick={() => setIsNameSet(false)} className="text-xs text-pink-400 hover:underline">Edit Name</button>
                                 </div>
                                 <textarea
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                     placeholder="Write your wishes for the couple..."
-                                    className="w-full h-40 p-6 bg-gray-50 rounded-[2rem] border-none outline-none focus:ring-2 ring-pink-200 transition-all resize-none shadow-inner text-gray-700"
+                                    className="w-full h-40 p-6 bg-gray-50 rounded-[2rem] outline-none focus:ring-2 ring-pink-200 transition-all resize-none shadow-inner text-gray-700"
                                 />
                                 <button
                                     onClick={handleSendMessage}
                                     disabled={!message.trim() || isSending}
-                                    className="flex items-center justify-center gap-3 w-full py-4 bg-pink-500 text-white font-bold rounded-2xl shadow-lg hover:bg-pink-600 active:scale-95 transition-all disabled:opacity-50"
+                                    className="flex items-center justify-center gap-3 w-full py-4 bg-pink-500 text-white font-bold rounded-2xl shadow-lg hover:bg-pink-600 transition-all disabled:opacity-50"
                                 >
                                     {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Send Blessings"}
                                 </button>
@@ -153,31 +152,56 @@ export default function BlessingsSection() {
                         )}
                     </div>
 
-                    {/* Feed Section */}
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between mb-4 px-2">
-                            <span className="flex items-center gap-2 text-gray-500 font-medium">
-                                <MessageSquare className="w-5 h-5" /> Guestbook
+                    {/* --- UPDATED SLIDESHOW SECTION --- */}
+                    <div className="relative flex flex-col justify-center min-h-[400px]">
+                        <div className="flex items-center justify-between mb-8 px-4">
+                            <span className="flex items-center gap-2 text-gray-400 font-bold uppercase tracking-widest text-xs">
+                                <MessageSquare className="w-4 h-4" /> Live Guestbook
                             </span>
                             {isLoading && <Loader2 className="w-4 h-4 animate-spin text-pink-300" />}
                         </div>
 
-                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div className="relative overflow-hidden h-64 flex items-center">
                             {receivedMessages.length > 0 ? (
-                                receivedMessages.map((msg, idx) => (
-                                    <div key={idx} className="p-6 rounded-[2rem] bg-white shadow-sm border border-white/60 animate-in fade-in slide-in-from-bottom-2">
-                                        <p className="text-gray-700 italic mb-3">"{msg.message || "Sending love!"}"</p>
-                                        <div className="flex items-center gap-2 text-sm text-gray-400 font-bold uppercase tracking-tighter">
-                                            <span className="text-pink-300">—</span> {msg.name || "Well Wisher"}
-                                        </div>
+                                <div
+                                    key={currentIndex}
+                                    className="w-full p-10 rounded-[3rem] bg-white shadow-2xl border border-white relative animate-in fade-in slide-in-from-right-8 duration-700"
+                                >
+                                    <Quote className="absolute top-6 left-6 w-12 h-12 text-pink-50 opacity-10" />
+                                    <p className="text-xl md:text-2xl text-gray-700 italic leading-relaxed mb-6 text-center">
+                                        "{receivedMessages[currentIndex].message || "Sending love!"}"
+                                    </p>
+                                    <div className="flex items-center justify-center gap-3">
+                                        <div className="h-[1px] w-8 bg-pink-200" />
+                                        <span className="text-sm font-black text-pink-500 uppercase tracking-widest">
+                                            {receivedMessages[currentIndex].name || "Well Wisher"}
+                                        </span>
+                                        <div className="h-[1px] w-8 bg-pink-200" />
                                     </div>
-                                ))
+                                </div>
                             ) : !isLoading ? (
-                                <div className="text-center py-10 text-gray-400 italic font-light">
+                                <div className="w-full text-center py-10 text-gray-400 italic bg-white/40 rounded-3xl border border-dashed border-gray-200">
                                     No public wishes yet. Be the first to bless the couple!
                                 </div>
-                            ) : null}
+                            ) : (
+                                <div className="w-full flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-pink-200" /></div>
+                            )}
                         </div>
+
+                        {/* Pagination Indicators */}
+                        {receivedMessages.length > 1 && (
+                            <div className="flex justify-center gap-2 mt-8">
+                                {receivedMessages.map((_, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setCurrentIndex(idx)}
+                                        className={`h-1.5 transition-all duration-500 rounded-full ${
+                                            idx === currentIndex ? 'w-8 bg-pink-400' : 'w-2 bg-pink-100'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
