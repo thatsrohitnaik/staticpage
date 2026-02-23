@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Added this
 import Confetti from 'react-confetti';
 import Hero from './componentNew/Hero';
@@ -24,6 +24,28 @@ function App() {
         width: window.innerWidth,
         height: window.innerHeight,
     });
+
+    useEffect(() => {
+        // 1. Get the 'scroll' parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sectionId = urlParams.get('scroll');
+
+        if (sectionId) {
+            // 2. Add a small delay to ensure the DOM is fully rendered
+            // This is crucial if your sections are dynamic or large
+            const timeoutId = setTimeout(() => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 500); // 500ms delay is usually safe
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, []);
 
     // We create a "MainContent" component to keep the App logic clean
     const MainWeddingPage = () => (

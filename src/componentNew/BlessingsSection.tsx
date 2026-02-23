@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, Heart, Loader2, MessageSquare, UserCircle, Quote } from 'lucide-react';
+import { Heart, Loader2, MessageSquare, UserCircle, LayoutGrid } from 'lucide-react';
 
 export default function BlessingsSection() {
     const [receivedMessages, setReceivedMessages] = useState([]);
@@ -7,9 +7,6 @@ export default function BlessingsSection() {
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
-    // Slideshow State
-    const [currentIndex, setCurrentIndex] = useState(0);
 
     // Guest State
     const [guestName, setGuestName] = useState('');
@@ -27,16 +24,6 @@ export default function BlessingsSection() {
         }
         fetchContent();
     }, []);
-
-    // --- SLIDESHOW LOGIC ---
-    useEffect(() => {
-        if (receivedMessages.length > 1) {
-            const timer = setInterval(() => {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % receivedMessages.length);
-            }, 5000); // Changes message every 5 seconds
-            return () => clearInterval(timer);
-        }
-    }, [receivedMessages]);
 
     const fetchContent = async () => {
         setIsLoading(true);
@@ -81,6 +68,7 @@ export default function BlessingsSection() {
                 })
             });
             setMessage('');
+            // Optional: Immediately add the message to the UI for better UX
             setTimeout(fetchContent, 2000);
         } catch (error) {
             console.error("Failed to send message", error);
@@ -92,6 +80,7 @@ export default function BlessingsSection() {
     return (
         <section className="py-20 px-4 bg-gray-50/50" id={"blessings-section"}>
             <div className="max-w-6xl mx-auto">
+                {/* Header */}
                 <div className="text-center mb-16">
                     <h2 className="text-5xl font-light text-gray-700 italic mb-4">Blessings & Wishes</h2>
                     {voteCount > 0 && (
@@ -101,10 +90,10 @@ export default function BlessingsSection() {
                     )}
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    {/* Input Form Area */}
-                    <div className="p-10 rounded-[2.5rem] bg-white shadow-xl border border-white h-full">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+                {/* Input Form Area - Now Centered */}
+                <div className="max-w-2xl mx-auto mb-24">
+                    <div className="p-10 rounded-[2.5rem] bg-white shadow-xl border border-white">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-2">
                             <Heart className="w-6 h-6 text-pink-500 fill-pink-500" />
                             Send Your Love
                         </h3>
@@ -131,8 +120,8 @@ export default function BlessingsSection() {
                             </div>
                         ) : (
                             <div className="space-y-6">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium text-gray-600">Writing as <b>{guestName}</b></span>
+                                <div className="flex items-center justify-between px-2">
+                                    <span className="text-sm font-medium text-gray-600">Writing as <b className="text-gray-900">{guestName}</b></span>
                                     <button onClick={() => setIsNameSet(false)} className="text-xs text-pink-400 hover:underline">Edit Name</button>
                                 </div>
                                 <textarea
@@ -151,58 +140,51 @@ export default function BlessingsSection() {
                             </div>
                         )}
                     </div>
+                </div>
 
-                    {/* --- UPDATED SLIDESHOW SECTION --- */}
-                    <div className="relative flex flex-col justify-center min-h-[400px]">
-                        <div className="flex items-center justify-between mb-8 px-4">
-                            <span className="flex items-center gap-2 text-gray-400 font-bold uppercase tracking-widest text-xs">
-                                <MessageSquare className="w-4 h-4" /> Live Guestbook
-                            </span>
-                            {isLoading && <Loader2 className="w-4 h-4 animate-spin text-pink-300" />}
+                {/* --- WALL OF BLESSINGS --- */}
+                <div className="mt-10">
+                    <div className="flex items-center gap-4 mb-12">
+                        <div className="h-[1px] flex-1 bg-gray-200" />
+                        <h3 className="text-3xl font-light text-gray-600 flex items-center gap-3 px-4">
+                            <LayoutGrid className="w-6 h-6 text-pink-400" />
+                            Wall of Blessings
+                        </h3>
+                        <div className="h-[1px] flex-1 bg-gray-200" />
+                    </div>
+
+                    {isLoading && receivedMessages.length === 0 ? (
+                        <div className="flex justify-center py-20">
+                            <Loader2 className="w-10 h-10 animate-spin text-pink-200" />
                         </div>
-
-                        <div className="relative overflow-hidden h-64 flex items-center">
-                            {receivedMessages.length > 0 ? (
+                    ) : receivedMessages.length > 0 ? (
+                        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                            {receivedMessages.map((msg, idx) => (
                                 <div
-                                    key={currentIndex}
-                                    className="w-full p-10 rounded-[3rem] bg-white shadow-2xl border border-white relative animate-in fade-in slide-in-from-right-8 duration-700"
+                                    key={idx}
+                                    className="break-inside-avoid p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 duration-300 group"
                                 >
-                                    <Quote className="absolute top-6 left-6 w-12 h-12 text-pink-50 opacity-10" />
-                                    <p className="text-xl md:text-2xl text-gray-700 italic leading-relaxed mb-6 text-center">
-                                        "{receivedMessages[currentIndex].message || "Sending love!"}"
+                                    <p className="text-gray-600 italic leading-relaxed mb-6 text-lg">
+                                        "{msg.message}"
                                     </p>
-                                    <div className="flex items-center justify-center gap-3">
-                                        <div className="h-[1px] w-8 bg-pink-200" />
-                                        <span className="text-sm font-black text-pink-500 uppercase tracking-widest">
-                                            {receivedMessages[currentIndex].name || "Well Wisher"}
-                                        </span>
-                                        <div className="h-[1px] w-8 bg-pink-200" />
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center group-hover:bg-pink-100 transition-colors">
+                                            <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-xs font-bold text-gray-800 uppercase tracking-widest">
+                                                {msg.name || "Well Wisher"}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            ) : !isLoading ? (
-                                <div className="w-full text-center py-10 text-gray-400 italic bg-white/40 rounded-3xl border border-dashed border-gray-200">
-                                    No public wishes yet. Be the first to bless the couple!
-                                </div>
-                            ) : (
-                                <div className="w-full flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-pink-200" /></div>
-                            )}
+                            ))}
                         </div>
-
-                        {/* Pagination Indicators */}
-                        {receivedMessages.length > 1 && (
-                            <div className="flex justify-center gap-2 mt-8">
-                                {receivedMessages.map((_, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setCurrentIndex(idx)}
-                                        className={`h-1.5 transition-all duration-500 rounded-full ${
-                                            idx === currentIndex ? 'w-8 bg-pink-400' : 'w-2 bg-pink-100'
-                                        }`}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    ) : (
+                        <div className="text-center text-gray-400 py-20 bg-white/40 rounded-[3rem] border border-dashed border-gray-200">
+                            The wall is waiting for your touch. Be the first to leave a message!
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
