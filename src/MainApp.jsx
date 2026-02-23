@@ -61,8 +61,8 @@ function App() {
             <Hero />
             <Countdown />
             <Letter />
-            <BlessingsSection />
             <PhotoUploadPanel />
+            <BlessingsSection />
             <MusicSection />
             <GuestGuide />
             <Details />
